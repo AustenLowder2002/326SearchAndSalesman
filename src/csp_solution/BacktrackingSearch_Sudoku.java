@@ -3,6 +3,10 @@ package csp_solution;
 import core_algorithms.BacktrackingSearch;
 import csp_problems.Sudoku;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class BacktrackingSearch_Sudoku extends BacktrackingSearch<String,Integer> {
 
     public BacktrackingSearch_Sudoku(Sudoku problem){
@@ -19,11 +23,11 @@ public class BacktrackingSearch_Sudoku extends BacktrackingSearch<String,Integer
     @Override
     public boolean revise(String head, String tail) {
         boolean revised = false;
-        // Get the domain of the head variable
-        var headDomain = allVariables.get(head).domain();
+        List<Integer> headDomain = new ArrayList<>(allVariables.get(head).domain());
 
-        // For each value in the head's domain, check if there's a value in the tail's domain that's different
-        for (Integer value : headDomain) {
+        Iterator<Integer> iterator = headDomain.iterator();
+        while (iterator.hasNext()) {
+            Integer value = iterator.next();
             boolean hasDifferentValue = false;
             for (Integer tailValue : allVariables.get(tail).domain()) {
                 if (!value.equals(tailValue)) {
@@ -31,12 +35,14 @@ public class BacktrackingSearch_Sudoku extends BacktrackingSearch<String,Integer
                     break;
                 }
             }
-            // If there's no different value in the tail's domain, remove the value from the head's domain
             if (!hasDifferentValue) {
-                headDomain.remove(value);
+                iterator.remove();
                 revised = true;
             }
         }
+        allVariables.get(head).domain().clear();
+        allVariables.get(head).domain().addAll(headDomain);
+
         return revised;
     }
 

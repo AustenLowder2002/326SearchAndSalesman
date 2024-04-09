@@ -34,7 +34,7 @@ public class TSP implements Problem<List<Integer>> {
                 this.MAP = Sample.SAMPLE_26;
                 break;
             default:
-                //just to make Java happy..
+                //just to make Java happy...
                 this.MAP = null;
                 System.out.println("Wrong map size; Choose from: 5, 6, 17, or 26.");
                 exit(1);
