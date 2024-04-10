@@ -15,6 +15,7 @@ public class Individual<G> implements Comparable<Individual<G>>{
         this.fitnessScore = fitnessScore;
     }
 
+
     public List<G> getChromosome() {
         return chromosome;
     }

@@ -28,6 +28,7 @@ public class GeneticAlgorithm_TSP
         return 1/problem.cost(chromosome);
     }
 
+
     public Individual<Integer> reproduce(Individual<Integer> p1, Individual<Integer> p2) {
         List<Integer> parent1 = p1.getChromosome();
         List<Integer> parent2 = p2.getChromosome();
@@ -38,12 +39,15 @@ public class GeneticAlgorithm_TSP
         int endPos = (int) (Math.random() * size);
 
         List<Integer> offspringChromosome = new ArrayList<>(size);
+
+        // Populate the offspring chromosome with null values
         for (int i = 0; i < size; i++) {
-            if (startPos < endPos && i > startPos && i < endPos) {
-                offspringChromosome.add(parent1.get(i));
-            } else if (startPos > endPos && !(i < startPos && i > endPos)) {
-                offspringChromosome.add(parent1.get(i));
-            }
+            offspringChromosome.add(null);
+        }
+
+        // Add crossover segments from parent1 to offspring
+        for (int i = startPos; i < endPos; i++) {
+            offspringChromosome.set(i, parent1.get(i));
         }
 
         // Add missing cities from parent2 to offspring

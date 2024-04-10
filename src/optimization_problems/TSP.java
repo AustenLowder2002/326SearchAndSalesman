@@ -59,14 +59,40 @@ public class TSP implements Problem<List<Integer>> {
 
     public double cost(List<Integer> state){
         double totalDistance = 0.0;
-        for(int i=0, j=1; j<state.size(); i++,j++){
-            totalDistance +=
-                    MAP.distanceMatrix[state.get(i)][state.get(j)];
+        int size = state.size();
+
+        // Check if the state list is empty or has only one city
+        if (size <= 1) {
+            System.err.println("Error: State list is empty or has only one city.");
+            return 0.0;
         }
-        totalDistance +=
-                MAP.distanceMatrix[state.get(state.size()-1)][state.get(0)];
+
+        for(int i = 0, j = 1; j < size; i++, j++) {
+            int cityIndex1 = state.get(i);
+            int cityIndex2 = state.get(j);
+
+            // Check if the city indices are within the bounds of the distance matrix
+            if (cityIndex1 < 0 || cityIndex1 >= MAP.distanceMatrix.length ||
+                    cityIndex2 < 0 || cityIndex2 >= MAP.distanceMatrix.length) {
+                return Double.POSITIVE_INFINITY;
+            }
+
+            // Calculate the distance between the two cities
+            double distance = MAP.distanceMatrix[cityIndex1][cityIndex2];
+
+            // Check if the distance is zero
+            if (distance == 0.0) {
+                System.err.println("Error: Distance between city " + cityIndex1 + " and city " + cityIndex2 + " is zero.");
+                return Double.POSITIVE_INFINITY; // Return infinity to indicate an error
+            }
+
+            totalDistance += distance;
+
+        }
+
         return totalDistance;
     }
+
 
     public List<Integer> getInitState() {
         return INIT_STATE;
