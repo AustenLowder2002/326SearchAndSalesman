@@ -48,7 +48,7 @@ public class BaseSearch<S,A> {
         return false;
     }
 
-    private void printSolutionPath(Node<S, A> node) {
+    protected void printSolutionPath(Node<S, A> node) {
         int pathCost = node.getPathCost();
         Stack<S> path = new Stack<>();
         do {
