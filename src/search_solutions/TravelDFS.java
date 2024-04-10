@@ -2,6 +2,7 @@ package search_solutions;
 
 import core_search.BaseSearch;
 import core_search.LIFOQueue;
+import search_problems.*;
 
 /**
  * Solving the Romania travel problem using depth first search
@@ -10,7 +11,7 @@ import core_search.LIFOQueue;
 public class TravelDFS extends BaseSearch<String, String>{
 
     public TravelDFS (String mapFile){
-        super (new search_problems.Travel(mapFile), new LIFOQueue<>());
+        super (new Travel(mapFile), new LIFOQueue<>());
     }
 
     public static void main(String[] args){

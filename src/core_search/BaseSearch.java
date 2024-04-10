@@ -27,39 +27,42 @@ public class BaseSearch<S,A> {
         this.frontier = frontier;
     }
 
-    public boolean search(){
+    public boolean search() {
         frontier.add(new Node<>(p.initialState(), null, 0, null));
 
-        while(!frontier.isEmpty()){
-            Node<S,A> node = frontier.pop();
-            if (!expanded.contains(node.getState())){
-               // System.out.println(node.getState()+" expanded");
-                if(node.getState().equals(p.goalState())){
-                    int pathCost = node.getPathCost();
-                    Stack<S> path = new Stack<>();
-                    do {
-                        path.add(node.getState());
-                        node = node.getParent();
-                    } while(node!=null);
-
-                    System.out.println("Path (from initial state to goal state): ");
-                    while(!path.isEmpty()){
-                        p.printState(path.pop());
-                        if(!path.isEmpty()) {
-                            System.out.println("↓");
-                        }
-                    }
-                    System.out.println("\nPath cost: "+pathCost);
+        while (!frontier.isEmpty()) {
+            Node<S, A> node = frontier.pop();
+            if (!expanded.contains(node.getState())) {
+                if (node.getState().equals(p.goalState())) {
+                    printSolutionPath(node);
                     return true;
                 }
                 expanded.add(node.getState());
 
-                for(Tuple<S,A> t : p.execution(node.getState())){
-                    Node<S,A> child = new Node<>(t.getState(), t.getAction(),t.getCost()+node.getPathCost(), node);
+                for (Tuple<S, A> t : p.execution(node.getState())) {
+                    Node<S, A> child = new Node<>(t.getState(), t.getAction(), t.getCost() + node.getPathCost(), node);
                     frontier.add(child);
                 }
             }
         }
         return false;
+    }
+
+    private void printSolutionPath(Node<S, A> node) {
+        int pathCost = node.getPathCost();
+        Stack<S> path = new Stack<>();
+        do {
+            path.add(node.getState());
+            node = node.getParent();
+        } while (node != null);
+
+        System.out.println("Path (from initial state to goal state): ");
+        while (!path.isEmpty()) {
+            p.printState(path.pop());
+            if (!path.isEmpty()) {
+                System.out.println("↓");
+            }
+        }
+        System.out.println("\nPath cost: " + pathCost);
     }
 }
