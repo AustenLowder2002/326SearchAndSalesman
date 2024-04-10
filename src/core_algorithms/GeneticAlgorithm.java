@@ -55,19 +55,42 @@ public abstract class GeneticAlgorithm<G> {
     public abstract Individual<G> mutate (Individual<G> i);
     public abstract double calcFitnessScore(List<G> chromosome);
 
-    public Individual<G> selectAParent(
-            List<Individual<G>> population){
-        //TODO
-        return null;
+    public Individual<G> selectAParent(List<Individual<G>> population, Individual<G> p1) {
+        // Remove the first parent from the population
+        List<Individual<G>> remainingPopulation = new ArrayList<>(population);
+        remainingPopulation.remove(p1);
+
+        // Perform selection from the remaining population
+        double totalFitness = 0.0;
+        for (Individual<G> individual : remainingPopulation) {
+            totalFitness += individual.getFitnessScore(); // Assuming each individual has a getFitness() method
+        }
+        double rand = new Random().nextDouble() * totalFitness;
+        double runningTotal = 0.0;
+        for (Individual<G> individual : remainingPopulation) {
+            runningTotal += individual.getFitnessScore();
+            if (runningTotal >= rand) {
+                return individual;
+            }
+        }
+        return remainingPopulation.get(new Random().nextInt(remainingPopulation.size())); // Fallback in case of errors
     }
 
-    //optional, select a parent that's not p.
-    public Individual<G> selectAParent(
-            List<Individual<G>> population, Individual<G> p){
-     //TODO
-        return p;
+    public Individual<G> selectAParent(List<Individual<G>> population) {
+        double totalFitness = 0.0;
+        for (Individual<G> individual : population) {
+            totalFitness += individual.getFitnessScore(); // Assuming each individual has a getFitness() method
+        }
+        double rand = new Random().nextDouble() * totalFitness;
+        double runningTotal = 0.0;
+        for (Individual<G> individual : population) {
+            runningTotal += individual.getFitnessScore();
+            if (runningTotal >= rand) {
+                return individual;
+            }
+        }
+        return population.get(new Random().nextInt(population.size())); // Fallback in case of errors
     }
-
 
 
 

@@ -15,12 +15,12 @@ import java.util.List;
 public class GeneticAlgorithm_TSP
         extends GeneticAlgorithm<Integer> {
     private final TSP problem;
-    private final double mutationRate;
+    private final double mutationRate; // Define mutationRate as an instance variable
 
     public GeneticAlgorithm_TSP(int maxGen, double mRate, double elitism, TSP problem) {
         super(maxGen, mRate, elitism);
         this.problem = problem;
-        this.mutationRate = mRate;
+        this.mutationRate = mRate; // Initialize mutationRate using the provided parameter
     }
 
     public double calcFitnessScore(
@@ -33,6 +33,7 @@ public class GeneticAlgorithm_TSP
         List<Integer> parent2 = p2.getChromosome();
         int size = parent1.size();
 
+        // Perform crossover (e.g., order crossover)
         int startPos = (int) (Math.random() * size);
         int endPos = (int) (Math.random() * size);
 
@@ -64,6 +65,7 @@ public class GeneticAlgorithm_TSP
         List<Integer> chromosome = individual.getChromosome();
         int size = chromosome.size();
 
+        // Apply mutation to the chromosome
         for (int pos1 = 0; pos1 < size; pos1++) {
             if (Math.random() < mutationRate) {
                 int pos2 = (int) (Math.random() * size);
