@@ -10,10 +10,8 @@ public class Main {
                 new int[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 0}}
         );
 
-
         testAlgorithm("Greedy Best-First Sum of Distances", new GBFSOD<>(problem1, new SimplePQ<>()));
         testAlgorithm("A* Sum of Distances", new ASSOD<>(problem1, new SimplePQ<>()));
-        //
         testAlgorithm("Greedy Best-First Misplaced Tiles", new GBFMT<>(problem1, new SimplePQ<>()));
         testAlgorithm("A* Misplaced Tiles", new ASMT<>(problem1, new SimplePQ<>()));
         testAlgorithm("BFS", new BFS<>(problem1, new SimplePQ<>()));

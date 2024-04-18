@@ -11,16 +11,16 @@ public record SlidingTileProblem(int[][] initialState, int[][] goalState) implem
     // Method to generate successors for the given state
     public List<Tuple<int[][], Integer>> execution(int[][] state) {
         List<Tuple<int[][], Integer>> successors = new ArrayList<>();
-        Set<int[][]> visitedStates = new HashSet<>(); // To keep track of visited states
+        Set<int[][]> visitedStates = new HashSet<>();
 
-        // Debug print: Print the current state being processed
         System.out.println("Processing state:");
         printState(state);
 
         // Check if the current state is equal to the goal state
         if (isGoalState(state)) {
             System.out.println("Goal state reached!");
-            return successors; // No need to generate successors if the goal state is reached
+            System.exit(0);
+            return successors;
         }
 
         // Find the empty tile position
@@ -48,37 +48,30 @@ public record SlidingTileProblem(int[][] initialState, int[][] goalState) implem
             if (isValidMove(newRow, newCol, state.length, state[0].length)) {
                 int[][] successorState = cloneState(state);
 
-                // Swap the empty tile with the adjacent tile
                 successorState[emptyTileRow][emptyTileCol] = state[newRow][newCol];
                 successorState[newRow][newCol] = 0;
 
-                // Debug print: Print the generated successor state
                 System.out.println("Generated successor state:");
                 printState(successorState);
 
-                // Check if the successor state has already been visited
                 if (!visitedStates.contains(successorState)) {
                     visitedStates.add(successorState);
                     successors.add(new Tuple<>(successorState, null, 1));
                 } else {
-                    // Debug print: Print if the successor state is a duplicate
                     System.out.println("Duplicate state. Skipping...");
                 }
             }
         }
 
-        // Debug print: Print the number of successors generated
         System.out.println("Number of successors generated: " + successors.size());
 
         return successors;
     }
 
-    // Method to check if the move is valid within the board bounds
     private boolean isValidMove(int row, int col, int numRows, int numCols) {
         return row >= 0 && row < numRows && col >= 0 && col < numCols;
     }
 
-    // Method to clone the state to avoid modifying the original state
     private int[][] cloneState(int[][] state) {
         int numRows = state.length;
         int numCols = state[0].length;
@@ -91,7 +84,6 @@ public record SlidingTileProblem(int[][] initialState, int[][] goalState) implem
         return clone;
     }
 
-    // Method to print the state for debugging purposes
     public void printState(int[][] state) {
         for (int[] row : state) {
             for (int value : row) {
@@ -102,7 +94,6 @@ public record SlidingTileProblem(int[][] initialState, int[][] goalState) implem
         System.out.println();
     }
 
-    // Method to check if the current state is equal to the goal state
     private boolean isGoalState(int[][] state) {
         for (int i = 0; i < state.length; i++) {
             for (int j = 0; j < state[i].length; j++) {
