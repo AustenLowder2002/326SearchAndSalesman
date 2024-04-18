@@ -54,9 +54,12 @@ public record SlidingTileProblem(int[][] initialState, int[][] goalState) implem
                 System.out.println("Generated successor state:");
                 printState(successorState);
 
+                // Calculate the heuristic cost for the successor state
+                int heuristicCost = calculateHeuristic(successorState);
+
                 if (!visitedStates.contains(successorState)) {
                     visitedStates.add(successorState);
-                    successors.add(new Tuple<>(successorState, null, 1));
+                    successors.add(new Tuple<>(successorState, null, heuristicCost));
                 } else {
                     System.out.println("Duplicate state. Skipping...");
                 }
@@ -92,6 +95,19 @@ public record SlidingTileProblem(int[][] initialState, int[][] goalState) implem
             System.out.println();
         }
         System.out.println();
+    }
+    public int calculateHeuristic(int[][] currentState) {
+        int misplacedTiles = 0;
+
+        for (int i = 0; i < currentState.length; i++) {
+            for (int j = 0; j < currentState[i].length; j++) {
+                if (currentState[i][j] != goalState[i][j]) {
+                    misplacedTiles++;
+                }
+            }
+        }
+
+        return misplacedTiles;
     }
 
     private boolean isGoalState(int[][] state) {

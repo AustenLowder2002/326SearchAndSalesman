@@ -14,7 +14,7 @@ public class ASMT<S, A> extends BaseSearch<S, A> {
 
     @Override
     public boolean search() {
-        addToFrontier(problem.initialState(), null, 0, 0);
+        addToFrontier(problem.initialState(), null, 0, calculateHeuristic(problem.initialState(), problem.goalState()));
 
         while (!frontier.isEmpty()) {
             Node<S, A> currentNode = frontier.pop();
@@ -26,13 +26,11 @@ public class ASMT<S, A> extends BaseSearch<S, A> {
             }
 
             for (Tuple<S, A> successor : problem.execution(currentState)) {
+                int actualCost = currentNode.getPathCost() + successor.getCost();
                 int heuristicCost = calculateHeuristic(successor.getState(), problem.goalState());
-                addToFrontier(successor.getState(), successor.getAction(), currentNode.getPathCost() + successor.getCost(), heuristicCost);
+                int totalCost = actualCost + heuristicCost;
 
-                if (problem.goalState().equals(successor.getState())) {
-                    printSolutionPath(new Node<>(successor.getState(), successor.getAction(), currentNode.getPathCost() + successor.getCost(), currentNode));
-                    return true;
-                }
+                addToFrontier(successor.getState(), successor.getAction(), totalCost, heuristicCost);
             }
         }
 

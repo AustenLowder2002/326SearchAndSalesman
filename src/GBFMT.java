@@ -15,7 +15,7 @@ public class GBFMT<S, A> extends BaseSearch<S, A> {
     @Override
     public boolean search() {
 
-        addToFrontier(problem.initialState(), null, 0);
+        addToFrontier(problem.initialState(), null, calculateHeuristic(problem.initialState(), problem.goalState()));
 
         while (!frontier.isEmpty()) {
             Node<S, A> currentNode = frontier.pop();
@@ -23,25 +23,23 @@ public class GBFMT<S, A> extends BaseSearch<S, A> {
 
             if (problem.goalState().equals(currentState)) {
                 printSolutionPath(currentNode);
-                System.exit(0);
                 return true;
             }
 
-
             for (Tuple<S, A> successor : problem.execution(currentState)) {
+                S successorState = successor.getState();
 
-                int heuristicCost = calculateHeuristic(successor.getState(), problem.goalState());
+                // Calculate heuristic cost for the successor
+                int heuristicCost = calculateHeuristic(successorState, problem.goalState());
 
-                addToFrontier(successor.getState(), successor.getAction(), heuristicCost);
+                // Add the successor to the frontier with its heuristic cost
+                addToFrontier(successorState, successor.getAction(), heuristicCost);
 
-                if (problem.goalState().equals(successor.getState())) {
-                    printSolutionPath(new Node<>(successor.getState(), successor.getAction(), heuristicCost, currentNode));
-                    System.exit(0);
-                    return true;
-                }
+                // Note: We don't need to check for the goal state here, as we'll handle it after the loop
             }
         }
 
+        // No solution found
         return false;
     }
 
